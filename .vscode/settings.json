@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "string.h": "c"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "files.autoGuessEncoding": true,
+    "files.encoding": "gb2312"
+}
