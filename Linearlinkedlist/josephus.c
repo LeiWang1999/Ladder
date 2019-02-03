@@ -28,55 +28,13 @@ Status FindList(PNode List, ElementType var, int *index);
 Status InsertList(PNode List, int pos, ElementType data);
 Status DeleteNode(PNode List, int pos);
 Status DeleteList(PNode List);
-
+Status Josephus(PNode List);
 
 int main(int argc, char const *argv[])
 {
-    ElementType var;
-    int index;
-    int find_index;
-    ElementType index_data;
-    ElementType insert_data;
-    int insert_pos;
-    int delete_node;
-
     PNode List = CreateList();
     TraverseList(List);
-
-    printf("请输入要查询的节点:");
-    scanf("%d",&index);
-    if(IndexList(List, index, &index_data)){
-    printf("索引数据完毕,位于第%d个节点的数据为:%d\n", index, index_data);   
-    }
-    printf("请输入需要查询的内容:");
-    scanf("%d", &var);
-    if(FindList(List, var, &find_index)){
-    printf("你所查询的数据%d在链表的第%d个节点\n", var, find_index);
-    }
-
-    printf("您希望插入的节点是:");
-    scanf("%d",&insert_pos);
-    printf("数据为:");
-    scanf("%d",&insert_data);
-    if (InsertList(List,insert_pos,insert_data)) {
-        printf("插入数据成功\n");
-        TraverseList(List);
-    }
-
-    printf("请输入要删除的节点:");
-    scanf("%d",&delete_node);
-    if (DeleteNode(List,delete_node)) {
-        printf("删除节点成功\n");
-        TraverseList(List);
-    }
-
-    if (DeleteList(List)) {
-        printf("删除链表成功\n");
-        TraverseList(List);
-    }
-
-    
-    free(List);
+    Josephus(List);
     return 0;
 }
 
@@ -90,8 +48,8 @@ int main(int argc, char const *argv[])
 4. PNew变成新的PTail
 -------------------------------------------------*/
 PNode CreateList(void){
-    int lenth;
-    int var;
+    int lenth = 41;
+    int var = 0;
     // 第一步
     PNode PHead = (PNode)malloc(sizeof(Node));
     if (PHead == NULL) {
@@ -100,9 +58,9 @@ PNode CreateList(void){
         exit(-1);
     }
     PNode PTail = PHead;
-    PTail->next = NULL;
-    printf("请输入需要创建节点的个数:");
-    scanf("%d",&lenth);
+    PTail->next = PHead;
+//    printf("请输入需要创建节点的个数:");
+//    scanf("%d",&lenth);
     PHead->data = lenth;    // 为头节点的数据赋值，其值为链表的长度
     for(int i = 0; i < lenth; i++)
     {
@@ -112,11 +70,12 @@ PNode CreateList(void){
             exit(-1);
         }
         // 第二步
-        printf("请输入第%d个节点的数据:",i+1);
-        scanf("%d",&var);
+//        printf("请输入第%d个节点的数据:",i+1);
+//        scanf("%d",&var);
+        var++;
         PNew->data = var;
         // 第三步
-        PNew->next = NULL;
+        PNew->next = PHead->next;
         PTail->next = PNew;
         // 第四步
         PTail = PNew;
@@ -144,11 +103,11 @@ void TraverseList(PNode List){
      PList_Trav = PList_Trav->next;
      i++;
     }
-    while(PList_Trav !=NULL){
+    do{
         printf("第%d个节点的数据为:%d\n",i,PList_Trav->data);
         PList_Trav = PList_Trav->next;
         i++;
-    }
+    }while(PList_Trav !=List->next);
 }
 
 /*---------------------索引链表--------------
@@ -268,12 +227,8 @@ Status DeleteNode(PNode List, int pos){
     
     PNode PDele = List;
     PNode Temp;
-    for(int i = 0; i < pos-1; i++)
-    {
-        PDele = PDele->next;
-    }
     // 此时.PDele指向pos-1
-    Temp = PDele->next;
+    Temp = PDele;
     PDele->next = Temp->next;
     free(Temp);
     List->data--;
@@ -303,3 +258,21 @@ Status DeleteList(PNode List){
     return OK;
 }
 
+Status Josephus(PNode List){
+    PNode PList = List->next;
+    int count = 0;
+
+    while(List->data){
+        count++;
+        printf("%d", PList->data);
+        if (count == 3) {
+            printf("  died ",PList->data);
+            DeleteNode(PList, 1);
+            count = 0;
+        }
+        printf("\n");
+        PList = PList->next;
+    }
+    
+    
+}
