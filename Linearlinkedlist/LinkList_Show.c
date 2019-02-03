@@ -23,13 +23,17 @@ typedef struct ListNode
 
 PNode CreateList(void);
 void TraverseList(PNode List);
-
+PNode FindList(PNode List, ElementType var);
 
 
 int main(int argc, char const *argv[])
 {
+    ElementType var;
     PNode List = CreateList();
     TraverseList(List);
+    printf("请输入需要查询的内容:");
+    scanf("%d", &var);
+    FindList(List, var);
     return 0;
 }
 
@@ -54,7 +58,7 @@ PNode CreateList(void){
     }
     PNode PTail = PHead;
     PTail->next = NULL;
-    printf("请输入节点的个数:");
+    printf("请输入需要创建节点的个数:");
     scanf("%d",&lenth);
     PHead->data = lenth;    // 为头节点的数据赋值，其值为链表的长度
     for(int i = 0; i < lenth; i++)
@@ -91,10 +95,42 @@ void TraverseList(PNode List){
         printf("遍历链表失败\n");
         exit(-1);
     }
-    
+    else
+    {
+     printf("整个链表的长度为%d\n",PList_Trav->data);
+     PList_Trav = PList_Trav->next;
+     i++;
+    }
     while(PList_Trav !=NULL){
         printf("第%d个节点的数据为:%d\n",i,PList_Trav->data);
         PList_Trav = PList_Trav->next;
         i++;
     }
+}
+
+/*--------------查询链表---------------
+1. 判断链表的长度
+2. 从头开始遍历,直到匹配.
+*/
+
+PNode FindList(PNode List, ElementType var){
+    if (List == NULL) {
+        printf("头指针为空，遍历链表失败\n");
+        exit(-1);
+    }
+    int node_index = 0; // 节点的位置 
+    if (List->data == 0){   // 判断整个链表的长度，如果为0，就不必要遍历了
+        printf("链表的长度为0\n");
+        return List;
+    };
+    PNode PFind = List->next; 
+    node_index++;
+
+    while((PFind != NULL)&&(PFind->data!=var)){
+        PFind = PFind->next;
+        node_index++;
+    }
+
+    printf("你所查询的数据%d在链表的第%d个节点", PFind->data, node_index);
+    return PFind;
 }
