@@ -25,28 +25,40 @@ PNode CreateList(void);
 void TraverseList(PNode List);
 Status IndexList(PNode List, int index, ElementType *e);
 Status FindList(PNode List, ElementType var, int *index);
-
+Status InsertList(PNode List, int pos, ElementType data);
 
 int main(int argc, char const *argv[])
 {
     ElementType var;
     int index;
     int find_index;
-    ElementType index_date;
+    ElementType index_data;
+    ElementType insert_data;
+    int insert_pos;
     PNode List = CreateList();
     TraverseList(List);
 
     printf("请输入要查询的节点:");
     scanf("%d",&index);
-    if(IndexList(List, index, &index_date)){
-    printf("索引数据完毕,位于第%d个节点的数据为:%d\n", index, index_date);   
+    if(IndexList(List, index, &index_data)){
+    printf("索引数据完毕,位于第%d个节点的数据为:%d\n", index, index_data);   
     }
     printf("请输入需要查询的内容:");
     scanf("%d", &var);
     if(FindList(List, var, &find_index)){
     printf("你所查询的数据%d在链表的第%d个节点\n", var, find_index);
-
     }
+
+    printf("您希望插入的节点是:");
+    scanf("%d",&insert_pos);
+    printf("数据为:");
+    scanf("%d",&insert_data);
+    if (InsertList(List,insert_pos,insert_data)) {
+        printf("插入数据成功\n");
+        TraverseList(List);
+    }
+    
+
     return 0;
 }
 
@@ -185,4 +197,36 @@ Status FindList(PNode List, ElementType var, int *index){
     *index = node_index;
 //    printf("你所查询的数据%d在链表的第%d个节点\n", PFind->data, node_index);
     return OK;
+}
+
+
+/*------------------插入链表----------------------
+在所给参数pos的前面插入一个数据
+1. 新建一个节点Pnew，给数据赋值
+2. 把Pnew-next指向pos
+3. 把pos前的节点-next指向pnew
+*/
+Status InsertList(PNode List, int pos, ElementType data){
+    if (List == NULL) {
+        printf("头指针为空, 插入链表失败\n");
+        exit(-1);
+    }
+    if (pos<1 || pos >List->data+1) {
+        printf("pos不在理论范围内, 插入链表失败\n");
+        return ERROR;
+    }
+    PNode PList = List;
+    PNode PNew = (PNode)malloc(sizeof(Node));       //#######记得要开辟空间
+    PNew->data = data;
+    for(int i = 0; i < pos-1; i++)
+    {
+        PList = PList->next;   
+    }
+    // 此时i的值为pos-1 PList为pos-1的节点
+
+    PNew->next = PList->next; // 第二步
+    PList->next = PNew;     // 第三步
+    List->data++;
+    return OK;
+    
 }
