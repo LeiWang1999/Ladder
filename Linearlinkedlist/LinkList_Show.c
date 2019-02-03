@@ -26,6 +26,7 @@ void TraverseList(PNode List);
 Status IndexList(PNode List, int index, ElementType *e);
 Status FindList(PNode List, ElementType var, int *index);
 Status InsertList(PNode List, int pos, ElementType data);
+Status DeleteList(PNode List);
 
 int main(int argc, char const *argv[])
 {
@@ -58,7 +59,12 @@ int main(int argc, char const *argv[])
         TraverseList(List);
     }
     
-
+    if (DeleteList(List)) {
+        printf("删除链表成功\n");
+        TraverseList(List);
+    }
+    
+    free(List);
     return 0;
 }
 
@@ -229,4 +235,27 @@ Status InsertList(PNode List, int pos, ElementType data){
     List->data++;
     return OK;
     
+}
+
+
+/*-------------------删除整表------------------
+1. 遍历链表，释放内存
+Note : 并不删除头节点
+*/
+
+Status DeleteList(PNode List){
+    if (List==NULL) {
+        printf("头指针为空, 删除链表失败\n");
+        exit(-1);
+    }
+    PNode PDele = List->next;
+    List->next = NULL;  // 不能忘了 否则遍历失败
+    List->data = 0;
+    PNode Temp = PDele;
+    while(PDele!=NULL){
+        Temp = PDele->next;
+        free(PDele);
+        PDele = Temp;
+    }
+    return OK;
 }
