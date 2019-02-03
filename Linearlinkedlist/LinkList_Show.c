@@ -10,7 +10,7 @@
 #define OK 1
 #define ERROR 0
 
-typedef int Static;
+typedef int Status;
 typedef int ElementType;
 
 typedef struct ListNode
@@ -23,17 +23,30 @@ typedef struct ListNode
 
 PNode CreateList(void);
 void TraverseList(PNode List);
-PNode FindList(PNode List, ElementType var);
+Status IndexList(PNode List, int index, ElementType *e);
+Status FindList(PNode List, ElementType var, int *index);
 
 
 int main(int argc, char const *argv[])
 {
     ElementType var;
+    int index;
+    int find_index;
+    ElementType index_date;
     PNode List = CreateList();
     TraverseList(List);
+
+    printf("请输入要查询的节点:");
+    scanf("%d",&index);
+    if(IndexList(List, index, &index_date)){
+    printf("索引数据完毕,位于第%d个节点的数据为:%d\n", index, index_date);   
+    }
     printf("请输入需要查询的内容:");
     scanf("%d", &var);
-    FindList(List, var);
+    if(FindList(List, var, &find_index)){
+    printf("你所查询的数据%d在链表的第%d个节点\n", var, find_index);
+
+    }
     return 0;
 }
 
@@ -108,12 +121,45 @@ void TraverseList(PNode List){
     }
 }
 
+/*---------------------索引链表--------------
+1. 先判断传进函数的数据的合理性
+2. 索引链表
+*/
+
+Status IndexList(PNode List, int index, int * e){
+   
+    if (List == NULL) {
+        printf("头指针为空,遍历链表失败\n");
+        exit(-1);
+    }
+    if (index>List->data) {
+        printf("索引的长度超过了链表长度\n");
+        return ERROR;
+    }
+    else if (index < 1)
+    {
+        printf("索引的长度不符合规范\n");
+        return ERROR;
+    }
+    
+
+    PNode PIndex = List->next;
+    for(int i = 1; i < index; i++)
+    {   
+        PIndex = PIndex->next;
+    }
+    *e = PIndex->data;
+//    printf("索引数据完毕,位于第%d个节点的数据为:%d\n", index, PIndex->data);   
+    return OK;
+}
+
+
 /*--------------查询链表---------------
 1. 判断链表的长度
 2. 从头开始遍历,直到匹配.
 */
 
-PNode FindList(PNode List, ElementType var){
+Status FindList(PNode List, ElementType var, int *index){
     if (List == NULL) {
         printf("头指针为空，遍历链表失败\n");
         exit(-1);
@@ -121,7 +167,7 @@ PNode FindList(PNode List, ElementType var){
     int node_index = 0; // 节点的位置 
     if (List->data == 0){   // 判断整个链表的长度，如果为0，就不必要遍历了
         printf("链表的长度为0\n");
-        return List;
+        return ERROR;
     };
     PNode PFind = List->next; 
     node_index++;
@@ -129,8 +175,14 @@ PNode FindList(PNode List, ElementType var){
     while((PFind != NULL)&&(PFind->data!=var)){
         PFind = PFind->next;
         node_index++;
-    }
 
-    printf("你所查询的数据%d在链表的第%d个节点", PFind->data, node_index);
-    return PFind;
+    }
+    if (PFind == NULL) {
+        printf("查询无果\n");
+        return ERROR;
+    }
+    
+    *index = node_index;
+//    printf("你所查询的数据%d在链表的第%d个节点\n", PFind->data, node_index);
+    return OK;
 }
