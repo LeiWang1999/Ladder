@@ -26,7 +26,9 @@ void TraverseList(PNode List);
 Status IndexList(PNode List, int index, ElementType *e);
 Status FindList(PNode List, ElementType var, int *index);
 Status InsertList(PNode List, int pos, ElementType data);
+Status DeleteNode(PNode List, int pos);
 Status DeleteList(PNode List);
+
 
 int main(int argc, char const *argv[])
 {
@@ -36,6 +38,8 @@ int main(int argc, char const *argv[])
     ElementType index_data;
     ElementType insert_data;
     int insert_pos;
+    int delete_node;
+
     PNode List = CreateList();
     TraverseList(List);
 
@@ -58,11 +62,19 @@ int main(int argc, char const *argv[])
         printf("插入数据成功\n");
         TraverseList(List);
     }
-    
+
+    printf("请输入要删除的节点:");
+    scanf("%d",&delete_node);
+    if (DeleteNode(List,delete_node)) {
+        printf("删除节点成功\n");
+        TraverseList(List);
+    }
+
     if (DeleteList(List)) {
         printf("删除链表成功\n");
         TraverseList(List);
     }
+
     
     free(List);
     return 0;
@@ -238,11 +250,42 @@ Status InsertList(PNode List, int pos, ElementType data){
 }
 
 
+
+/*--------------------删除节点----------------
+1. 遍历到 pos节点之前的节点
+2. 将此节点的指针指向pos的下一个节点
+3. 释放pos节点
+*/
+Status DeleteNode(PNode List, int pos){
+    if (List == NULL) {
+        printf("头指针为空, 删除节点失败\n");
+        exit(-1);   
+    }
+    if (pos<1 || pos > List->data) {
+        printf("输入的节点不在理论反问内，删除节点失败\n");
+        return ERROR;
+    }
+    
+    PNode PDele = List;
+    PNode Temp;
+    for(int i = 0; i < pos-1; i++)
+    {
+        PDele = PDele->next;
+    }
+    // 此时.PDele指向pos-1
+    Temp = PDele->next;
+    PDele->next = Temp->next;
+    free(Temp);
+    List->data--;
+    return OK;
+}
+
+
+
 /*-------------------删除整表------------------
 1. 遍历链表，释放内存
 Note : 并不删除头节点
 */
-
 Status DeleteList(PNode List){
     if (List==NULL) {
         printf("头指针为空, 删除链表失败\n");
@@ -259,3 +302,4 @@ Status DeleteList(PNode List){
     }
     return OK;
 }
+
