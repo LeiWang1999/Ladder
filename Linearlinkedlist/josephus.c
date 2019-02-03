@@ -220,18 +220,13 @@ Status DeleteNode(PNode List, int pos){
         printf("头指针为空, 删除节点失败\n");
         exit(-1);   
     }
-    if (pos<1 || pos > List->data) {
-        printf("输入的节点不在理论范围内，删除节点失败\n");
-        return ERROR;
-    }
     
     PNode PDele = List;
     PNode Temp;
     // 此时.PDele指向pos-1
-    Temp = PDele;
+    Temp = PDele->next;
     PDele->next = Temp->next;
     free(Temp);
-    List->data--;
     return OK;
 }
 
@@ -260,19 +255,22 @@ Status DeleteList(PNode List){
 
 Status Josephus(PNode List){
     PNode PList = List->next;
-    int count = 0;
-
+    int count = 1;
+    printf("%d ", PList->data);
     while(List->data){
         count++;
-        printf("%d", PList->data);
         if (count == 3) {
-            printf("  died ",PList->data);
+            printf("died ",PList->data);
             DeleteNode(PList, 1);
-            count = 0;
+            List->data--;
+            count = 1;
+            PList = PList->next;
+            
         }
-        printf("\n");
-        PList = PList->next;
+        else PList = PList->next;
+        printf("%d ", PList->data);
+        
     }
-    
+
     
 }
