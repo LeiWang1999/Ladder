@@ -1,2 +1,7 @@
+# Princeling
+# 日期 2019年2月6日
 # 忽略Vscode的配置文件
 .\.vscode
+
+# 忽略所有的可执行文件
+*.exe
