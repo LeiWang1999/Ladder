@@ -21,7 +21,7 @@ typedef struct ListNode
 }Node,*PNode;
 
 
-PNode CreateList(void);
+PNode CreateList(int lenth);
 void TraverseList(PNode List);
 Status IndexList(PNode List, int index, ElementType *e);
 Status FindList(PNode List, ElementType var, int *index);
@@ -39,8 +39,11 @@ int main(int argc, char const *argv[])
     ElementType insert_data;
     int insert_pos;
     int delete_node;
+    int lenth;
 
-    PNode List = CreateList();
+    printf("请输入需要创建节点的个数:");
+    scanf("%d",&lenth);
+    PNode List = CreateList(lenth);
     TraverseList(List);
 
     printf("请输入要查询的节点:");
@@ -89,8 +92,7 @@ int main(int argc, char const *argv[])
 3. 将PNew的next指向Null
 4. PNew变成新的PTail
 -------------------------------------------------*/
-PNode CreateList(void){
-    int lenth;
+PNode CreateList(int lenth){
     int var;
     // 第一步
     PNode PHead = (PNode)malloc(sizeof(Node));
@@ -101,8 +103,7 @@ PNode CreateList(void){
     }
     PNode PTail = PHead;
     PTail->next = NULL;
-    printf("请输入需要创建节点的个数:");
-    scanf("%d",&lenth);
+
     PHead->data = lenth;    // 为头节点的数据赋值，其值为链表的长度
     for(int i = 0; i < lenth; i++)
     {

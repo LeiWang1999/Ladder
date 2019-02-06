@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "ctype.h": "c"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "files.autoGuessEncoding": true,
