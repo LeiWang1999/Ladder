@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STACK_MAX_SIZE 100
 #define TRUE 1
 #define FALSE 0
 #define OK 1
