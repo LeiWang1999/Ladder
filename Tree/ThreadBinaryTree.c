@@ -108,7 +108,7 @@ void ThreadTreeInit(PtrBiTNode root){
     }
 }
 
-// 初始化Pre节点，初始化全局变量的时候没有初值容易出问题
+// 初始化Pre节点，初始化全局变量的时候没有初值会出问题
 void InitPre_Thread(PtrBiTNode root){
     PtrBiTNode p = (PtrBiTNode)malloc(sizeof(BiTNode));
     pre = p;
