@@ -148,7 +148,6 @@ Status TestChess(int pos[][MAX_POS_Y], int pos_x, int pos_y){
         for(size_t i = 0; i < pos_y; i++)
         {
             if (!pos[pos_x][i]) {
-                CopyChess(chess,pos);
                 SetChess(chess,pos_x,i);
                 TestChess(chess, pos_x+1, pos_y);   
             }
