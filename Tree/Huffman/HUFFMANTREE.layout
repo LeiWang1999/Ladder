@@ -1,5 +1,6 @@
 [Editor_0]
 <<<<<<< HEAD
+<<<<<<< HEAD
 CursorCol=57
 CursorRow=139
 TopLine=105
@@ -14,6 +15,11 @@ CursorRow=10
 CursorCol=19
 CursorRow=133
 TopLine=103
+=======
+CursorCol=41
+CursorRow=119
+TopLine=28
+>>>>>>> omen
 LeftChar=1
 [Editors]
 Order=2,3,0
